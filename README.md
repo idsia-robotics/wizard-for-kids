@@ -50,7 +50,7 @@ Web Dashboard ↔ ROS Bridge ↔ Robot Adapters ↔ Robot Hardware
 1. **Clone the repository**:
 ```bash
 git clone <repository-url>
-cd hogwarts
+cd wizard-for-kids
 ```
 
 2. **Install web dependencies**:
@@ -143,7 +143,7 @@ The web interface includes a built-in configuration wizard that allows users to:
 
 ### Adding New Robot Support
 
-1. **Create Robot Adapter**: Implement a ROS 2 node that subscribes to semantic topics. The example node for TIAGo robot is available here [TIAGo Adapter Example](https://anonymous.4open.science/r/TIAGo-w4a-adapter-A9E4).
+1. **Create Robot Adapter**: Implement a ROS 2 node that subscribes to semantic topics. The example node for TIAGo robot is available here [TIAGo Adapter Example](https://github.com/idsia-robotics/wizard-for-kids-tiago).
 2. **Define Robot Configuration**: Use the configuration wizard to create a configuration file specifying capabilities of the new robot.
 
 ## Experiment Management
