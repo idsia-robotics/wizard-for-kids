@@ -186,17 +186,24 @@ This project supports the democratization of WoZ systems in HRI research. Contri
 If you use this work in your research, please cite:
 
 ```bibtex
-Available upon publication
-```
-
-<!-- ```bibtex
-@inproceedings{wizard4kids2026,
-  title={A wizard for kids: a platform for improvised child-robot interactions},
-  author={[Authors]},
-  booktitle={Proceedings of the 2026 ACM/IEEE International Conference on Human-Robot Interaction},
-  year={2026}
+@inproceedings{10.1145/3757279.3788810,
+author = {Frova, Davide and Landoni, Monica and Arreghini, Simone and Paolillo, Antonio},
+title = {A Wizard for Kids: A Platform for Improvised Child–Robot Interactions},
+year = {2026},
+isbn = {9798400721281},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3757279.3788810},
+doi = {10.1145/3757279.3788810},
+abstract = {We present an interface designed to operate social robots in a highly unpredictable context: a classroom, supporting user-centered design of innovative child–robot interactions.  Having a functional prototype enables rich user data elicitation and analysis, essential for understanding user needs and deriving meaningful requirements.   Deploying robots outside controlled laboratory conditions into a classroom, however, introduces challenges related to safety, robustness, and managing multiple, often noisy, interactions.   Our system addresses these challenges by providing a safe, flexible and resilient interface that ensures safe operation while allowing improvisation and adaptability to unpredictable children's behaviors.   The interface aims to be intuitive for non-expert users and support everyday teaching and learning activities in the classrooms.   By prioritizing usability, modularity, and robustness, our approach facilitates iterative design, accelerates the transition from Wizard-of-Oz prototyping to autonomous behaviors, and contributes to making child–robot interaction technologies more accessible and practical for diverse application domains.},
+booktitle = {Proceedings of the 21st ACM/IEEE International Conference on Human-Robot Interaction},
+pages = {1308–1312},
+numpages = {5},
+keywords = {Human–Robot Interaction, Social Robots, User Interface Design, Wizard-of-Oz},
+location = {Edinburgh, Scotland, UK},
+series = {HRI '26}
 }
-``` -->
+```
 
 ## License
 
