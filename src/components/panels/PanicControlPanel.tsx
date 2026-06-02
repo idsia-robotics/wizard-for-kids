@@ -45,22 +45,25 @@ export default function PanicControlPanel({
         }
       }
 
-      // 2. SEMANTIC PANIC: Send panic message for custom robot logic (5 times for reliability)
+      // 2. PANIC SIGNAL: RoboMaster panic uses std_msgs/Empty; dashboard adapters may use JSON String.
       if (robotConfig.topics.panic) {
+        const isRoboMasterPanic = robotConfig.topics.panic === '/robomaster/panic';
         const panicPublisher = new ROSLIB.Topic({
           ros,
           name: robotConfig.topics.panic,
-          messageType: 'std_msgs/String',
+          messageType: isRoboMasterPanic ? 'std_msgs/Empty' : 'std_msgs/String',
         });
 
-        const panicMsg = new ROSLIB.Message({
-          data: JSON.stringify({
-            action: 'panic',
-            reason: 'user_initiated',
-            timestamp: Date.now(),
-            immediate_stop: true
-          })
-        });
+        const panicMsg = isRoboMasterPanic
+          ? new ROSLIB.Message({})
+          : new ROSLIB.Message({
+              data: JSON.stringify({
+                action: 'panic',
+                reason: 'user_initiated',
+                timestamp: Date.now(),
+                immediate_stop: true,
+              }),
+            });
 
         // Send 5 panic messages with 100ms intervals for reliability
         for (let i = 0; i < 5; i++) {

@@ -208,3 +208,80 @@ series = {HRI '26}
 ## License
 
 This project is licensed under the Apache 2.0 License - see the [LICENSE](LICENSE) file for details.
+
+# Running the dashboard with Pixi
+
+## Terminal 1: ROS Bridge for dashboard
+First we run the rosbridge server if using the branched repo:
+
+```bash
+cd /Users/davide/USI/research/wizard-for-kids
+pixi shell
+source rosbridge_ws/install/setup.zsh
+ros2 launch rosbridge_server rosbridge_websocket_launch.xml
+```
+
+## Terminal 2 Dashboard bridge:
+
+```bash
+pixi shell
+node dashboard_bridge/index.js
+```
+
+### Command if dashboard/bridge/index.js fails to start when using Pixi
+
+```bash
+install_name_tool -add_rpath /Users/davide/USI/research/wizard-for-kids/.pixi/envs/default/lib node_modules/rclnodejs/build/Release/rclnodejs.node
+```
+
+## Terminal 3: Dashboard web app
+
+```bash
+npm run dev
+```
+
+## Terminal 4: CoppeliaSim RoboMaster EP ToF scene
+
+```bash
+pixi run coppelia
+```
+
+In CoppeliaSim, open:
+
+```text
+/Users/davide/USI/research/wizard-for-kids/robomaster_sim/scenes/playground_tof_ep.ttt
+```
+
+Then press play.
+
+## Terminal 5: RoboMaster EP ToF ROS driver
+
+### Simulated connection with RoboMaster EP ToF:
+
+```bash
+pixi run robomaster-ep-tof-sim
+```
+
+Equivalent manual command:
+
+```bash
+cd /Users/davide/USI/research/wizard-for-kids/rosbridge_ws
+pixi shell
+source install/setup.zsh
+ros2 launch robomaster_ros ep_tof.launch name:=robomaster conn_type:=sta
+```
+
+### Real connection with RoboMaster EP ToF:
+
+```bash
+pixi run robomaster-ep-tof-physical
+```
+
+Equivalent manual command:
+
+```bash
+cd /Users/davide/USI/research/wizard-for-kids/rosbridge_ws
+pixi shell
+source install/setup.zsh
+ros2 launch robomaster_ros ep_tof.launch name:=robomaster conn_type:=ap
+```

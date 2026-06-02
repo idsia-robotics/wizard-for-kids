@@ -118,7 +118,7 @@ export async function loadAllRobotConfigs(): Promise<
 
   // Fallback to hardcoded list if server is not available
   try {
-    const robotNames = ['robomaster', 'tiago'];
+    const robotNames = ['robomaster', 'tiago', 'alphamini'];
     const configs: Record<string, RobotConfig> = {};
 
     for (const robotName of robotNames) {

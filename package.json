@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "format": "prettier --write .",
-    "lint": "eslint src --fix"
+    "lint": "eslint src --fix",
+    "patch:rclnodejs": "node scripts/patch-rclnodejs.js"
   },
   "dependencies": {
     "@emotion/cache": "^11.14.0",

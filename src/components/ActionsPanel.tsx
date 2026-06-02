@@ -666,7 +666,7 @@ export default function ActionsPanel({
     const cmdVelTopic = new ROSLIB.Topic({
       ros,
       name: robotConfig.topics.cmdVel,
-      messageType: 'geometry_msgs/msg/Twist',
+      messageType: 'geometry_msgs/Twist',
     });
 
     let sent = 0;
@@ -691,6 +691,80 @@ export default function ActionsPanel({
     }, periodMs);
   };
 
+  const publishFeedbackLed = (
+    behavior: 'good' | 'bad',
+    times: number,
+    speed: number
+  ) => {
+    if (!ros || !robotConfig.topics.leds) {
+      console.warn('LED feedback requested, but LED topic is not available.');
+      return;
+    }
+
+    const ledTopic = new ROSLIB.Topic({
+      ros,
+      name: robotConfig.topics.leds,
+      messageType: 'std_msgs/String',
+    });
+
+    ledTopic.publish(
+      new ROSLIB.Message({
+        data: JSON.stringify({
+          action: 'feedback_blink',
+          params: {
+            behavior,
+            times,
+            speed,
+            intensity: 1.0,
+          },
+          timestamp: Date.now(),
+        }),
+      })
+    );
+
+    logLedEvent('feedback_blink', { behavior, times, speed, intensity: 1.0 });
+  };
+
+  const publishSemanticSound = (soundType: string) => {
+    if (!ros || !robotConfig.topics.sound) {
+      console.warn('Sound feedback requested, but sound topic is not available.');
+      return;
+    }
+
+    const soundTopic = new ROSLIB.Topic({
+      ros,
+      name: robotConfig.topics.sound,
+      messageType: 'std_msgs/String',
+    });
+
+    soundTopic.publish(
+      new ROSLIB.Message({
+        data: JSON.stringify({
+          action: 'play_sound',
+          sound_type: soundType,
+          timestamp: Date.now(),
+        }),
+      })
+    );
+
+    logSoundEvent('play_semantic_sound', { sound_type: soundType });
+  };
+
+  const publishHappyChime = () => {
+    logSoundEvent('happy_chime_sequence', {
+      sequence: ['chime', 'melody', 'note', 'beep', 'chime', 'melody', 'note'],
+      timing: 'sequential with delays',
+    });
+
+    publishSemanticSound('chime');
+    setTimeout(() => publishSemanticSound('melody'), 200);
+    setTimeout(() => publishSemanticSound('note'), 300);
+    setTimeout(() => publishSemanticSound('beep'), 400);
+    setTimeout(() => publishSemanticSound('chime'), 500);
+    setTimeout(() => publishSemanticSound('melody'), 600);
+    setTimeout(() => publishSemanticSound('note'), 700);
+  };
+
   const handlePositiveFeedback = () => {
     logSystemEvent('positive_feedback', {
       feedback_level: feedbackLevel,
@@ -698,11 +772,15 @@ export default function ActionsPanel({
     });
 
     if (feedbackLevel === 1) {
-      // Level 1 logic handled in LEDControlPanel
+      publishFeedbackLed('good', 4, 120);
     } else if (feedbackLevel === 2) {
-      // Level 2 logic
+      publishFeedbackLed('good', 6, 80);
+      for (let i = 0; i < 3; i += 1) {
+        setTimeout(() => publishSemanticSound('beep'), i * 600);
+      }
     } else {
-      // Level 3 logic
+      publishFeedbackLed('good', 8, 60);
+      publishHappyChime();
       rotateOnSpot(2, robotConfig.movementParams.rotationSpeed);
     }
   };
@@ -714,10 +792,13 @@ export default function ActionsPanel({
     });
 
     if (feedbackLevel === 1) {
-      // Level 1 logic handled in LEDControlPanel
+      publishFeedbackLed('bad', 2, 160);
     } else if (feedbackLevel === 2) {
+      publishFeedbackLed('bad', 4, 120);
       moveBack();
     } else {
+      publishFeedbackLed('bad', 6, 80);
+      publishSemanticSound('beep');
       moveBack(robotConfig.movementParams.backwardDistance * 2);
     }
   };

@@ -1,0 +1,41 @@
+{
+  "name": "alphamini",
+  "displayName": "AlphaMini Robot",
+  "description": "UBTech AlphaMini humanoid robot",
+  "topics": {
+    "cmdVel": "/alphamini/cmd_vel",
+    "odom": "/alphamini/odom",
+    "action": "/alphamini/action",
+    "expression": "/alphamini/expression",
+    "tts": "/alphamini/tts",
+    "stop_action": "/alphamini/stop_action"
+  },
+  "movementParams": {
+    "maxLinearSpeed": 1,
+    "maxAngularSpeed": 1.5,
+    "rotationSpeed": 1,
+    "backwardDistance": -0.1,
+    "backwardDuration": 400,
+    "wigglePhase1": 0.3,
+    "wigglePhase2": 0.6,
+    "wigglePhase3": 0.3,
+    "wiggleRateHz": 20
+  },
+  "capabilities": {
+    "hasCamera": false,
+    "hasMovement": true,
+    "hasArm": false,
+    "hasGripper": false,
+    "hasLeds": false,
+    "hasSound": true,
+    "hasPanic": true,
+    "hasRecording": true
+  },
+  "semanticPositions": [],
+  "semanticArmActions": [],
+  "recordingTopics": [
+    "/alphamini/cmd_vel",
+    "/alphamini/odom",
+    "/alphamini/action"
+  ]
+}

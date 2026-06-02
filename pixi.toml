@@ -1,0 +1,61 @@
+[workspace]
+authors = ["Davide Frova <frovad@usi.ch>"]
+channels = ["robostack-staging", "conda-forge"]
+name = "wizard-for-kids"
+platforms = ["osx-arm64"]
+version = "0.1.0"
+
+[tasks]
+build = "cd rosbridge_ws && colcon build --symlink-install"
+build-ros = "cd rosbridge_ws && colcon build --symlink-install"
+build-robomaster = "cd rosbridge_ws && colcon build --symlink-install --packages-up-to robomaster_ros"
+build-sim = "cmake -S robomaster_sim -B robomaster_sim/build -DCMAKE_BUILD_TYPE=Release && cmake --build robomaster_sim/build --target install"
+coppelia = "$COPPELIASIM_ROOT_DIR/../MacOS/coppeliaSim"
+rosbridge = "cd rosbridge_ws && zsh -lc 'source install/setup.zsh && ros2 launch rosbridge_server rosbridge_websocket_launch.xml'"
+robomaster-ep-tof-sim = "cd rosbridge_ws && zsh -lc 'source install/setup.zsh && ros2 launch robomaster_ros ep_tof.launch name:=robomaster conn_type:=sta'"
+robomaster-ep-tof-physical = "cd rosbridge_ws && zsh -lc 'source install/setup.zsh && ros2 launch robomaster_ros ep_tof.launch name:=robomaster conn_type:=ap'"
+
+[dependencies]
+ros-humble-desktop = ">=0.10.0,<0.11"
+colcon-common-extensions = ">=0.3.0,<0.4"
+compilers = ">=1.7.0,<2"
+make = ">=4.4.1,<5"
+cmake = ">=3.26.3,<4"
+pip = ">=26.1.1,<27"
+python = "==3.10.13"
+rosdep = ">=0.26.0,<0.27"
+numpy = ">=1.26.4,<2"
+tornado = ">=6.5.5,<7"
+pymongo = ">=4.17.0,<5"
+cbor2 = ">=5.9.0,<6"
+pyzmq = ">=26.2.0,<27"
+spdlog = ">=1.11.0,<2"
+boost = ">=1.78.0,<2"
+ffmpeg = ">=5.1.2,<6"
+libxslt = ">=1.1.37,<2"
+xmlschema = ">=3.4.5,<4"
+libopus = ">=1.4,<2"
+opencv = ">=4.6.0,<5"
+transforms3d = ">=0.4.2,<0.5"
+ros-humble-xacro = ">=2.0.8,<3"
+ros-humble-launch-xml = ">=1.0.4,<2"
+ros-humble-cv-bridge = ">=3.2.1,<4"
+ros-humble-launch-testing-ament-cmake = ">=1.0.4,<2"
+ros-humble-robot-state-publisher = ">=3.0.2,<4"
+ros-humble-joint-state-publisher = ">=2.3.0,<3"
+ros-humble-joint-state-publisher-gui = ">=2.3.0,<3"
+ros-humble-joy = ">=3.1.0,<4"
+
+[pypi-dependencies]
+robomaster = { git = "https://github.com/EliaCereda/RoboMaster-SDK.git", branch = "patch-2" }
+numpy-quaternion = ">=2024.0.8,<2025"
+pupil-apriltags = "==1.0.4.post11"
+
+[activation]
+scripts = ["rosbridge_ws/install/setup.sh"]
+
+[activation.env]
+ROS_LOCALHOST_ONLY = "1"
+SDKROOT = "/Library/Developer/CommandLineTools/SDKs/MacOSX15.4.sdk"
+CXXFLAGS = "-Wno-enum-constexpr-conversion"
+COPPELIASIM_ROOT_DIR = "/Applications/coppeliaSim.app/Contents/Resources"

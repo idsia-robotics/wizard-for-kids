@@ -1,3 +1,7 @@
+rosbridge_ws/
+robomaster_ros/
+robomaster_sim/
+
 # General
 .DS_Store
 .AppleDouble
@@ -71,4 +75,6 @@ next-env.d.ts
 
 
 # Data analysis .venv
-.venv/
+.venv/# pixi environments
+.pixi/*
+!.pixi/config.toml
