@@ -13,23 +13,36 @@ export default function JoystickControl({ moveSpeed }: JoystickControlProps) {
   const { ros, robotConfig } = useRosContext();
   const { logMovementEvent } = useExperimentLogger(ros);
   const lastLogTime = useRef(0);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const managerRef = useRef<any>(null);
   const logThrottleMs = 500; // Log joystick movements at most every 500ms
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let manager: any;
+    let cancelled = false;
+
+    if (managerRef.current) {
+      managerRef.current.destroy();
+      managerRef.current = null;
+    }
 
     if (ros && robotConfig.topics.cmdVel) {
       const joystickContainer = document.getElementById('joystick');
       if (joystickContainer) {
         // Dynamically import nipplejs
         import('nipplejs').then((nipplejs) => {
+          if (cancelled) {
+            return;
+          }
+
           manager = nipplejs.create({
             zone: joystickContainer,
             mode: 'static',
             position: { left: '50%', top: '50%' },
             color: 'blue',
           });
+          managerRef.current = manager;
 
           const cmdVelTopic = new ROSLIB.Topic({
             ros: ros,
@@ -91,6 +104,10 @@ export default function JoystickControl({ moveSpeed }: JoystickControlProps) {
 
     // Cleanup on unmount
     return () => {
+      cancelled = true;
+      if (managerRef.current === manager) {
+        managerRef.current = null;
+      }
       if (manager) {
         manager.destroy();
       }
